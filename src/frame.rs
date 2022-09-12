@@ -25,6 +25,32 @@ pub struct Frame<T> {
     body: Vec<u8>,
 }
 
+fn main() {
+    let matches = clap::App::new("cheddar")
+        .version(&crate_version!())
+        .author("Sean Marshallsay <srm.1708@gmail.com>")
+        .about("create a C header file using a Rust source file")
+        .arg(clap::Arg::with_name("FILE")
+             .short("-f")
+             .long("--file")
+             .conflicts_with("STRING")
+             .takes_value(true)
+             .help("the root source file"))
+        .arg(clap::Arg::with_name("STRING")
+             .short("-s")
+             .long("--string")
+             .conflicts_with("FILE")
+             .takes_value(true)
+             .help("use a string as the source code"))
+        .arg(clap::Arg::with_name("MODULE")
+             .short("-m")
+             .long("--module")
+             .takes_value(true)
+             .help("the module containing the C API"))
+        .arg(clap::Arg::with_name("OUTPUT")
+             .index(1)
+             .help("set the output file name and path"))
+        .get_matches();
 impl<T> Frame<T> {
     pub fn new(header: Header<T>) -> Self {
         Frame {
